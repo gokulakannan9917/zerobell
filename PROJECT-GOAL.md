@@ -2,58 +2,65 @@
 
 ## Goal
 Waiters greet and serve new customers within 15 seconds of them sitting down,
-without the customer ever having to wave or press a bell.
+without the customer ever having to wave or press a bell, even in a busy
+full-service restaurant with 25 tables and 15 staff.
 
 ## Evidence
-In one split-screen browser page:
+In one browser page, with no login:
 
-- Left: a restaurant floor map with Tables 1–6. Each table has a
-  "Guest Sat" button that simulates the seat sensor.
-- Right: two waiter smartband screens, Waiter A and Waiter B.
-- When the tester clicks "Guest Sat" on Table 4, both waiter screens flash
-  red at the same time with "Table 4: New Guest" and the same live 15-second
-  countdown.
-- When Waiter A taps "Attending" before the countdown ends:
-  - Waiter A's screen turns green and shows "Serving Table 4 (00:08)", where
-    the time is how long the guest waited.
-  - Waiter B's screen clears the alert straight away and shows
-    "Table 4 taken by Waiter A".
-- A top bar shows live metrics: Average Response Time (for example 8.0s)
-  and Tables Turned.
-- After the guest leaves, both watches show a blue "Table 4: Clean Table"
-  alert. Once a waiter marks it cleaned, Table 4 is "Available" again and
-  Tables Turned goes up by one.
+- Top bar: live metrics for Active Tables (for example 8/25), Available Staff
+  (for example 13/15), Avg Response Time, and Tables Turned Today. Also a
+  "Simulate Rush Hour" button.
+- Left: Tables 1–25 in 5-column grids, grouped into Zone A (Tables 1–9),
+  Zone B (10–17) and Zone C (18–25). Colours: green = Available,
+  amber/red = Needs Greeting with a ticking timer, teal = Dining,
+  blue = Needs Cleaning. Each table has one quick button: "Guest Sat" or
+  "Guest Left".
+- Right: a 15-staff shift roster grouped by zone, showing Available,
+  Busy Serving and On Break. Below it are 3 live smartwatch faces:
+  Waiter 1 (Zone A), Waiter 2 (Zone B) and Waiter 3 (Runner, all zones).
+- When "Guest Sat" is clicked on Table 4 (Zone A), every available Zone A staff
+  member is alerted. They light up in the roster, and Waiter 1's watch flashes
+  red with "Table 4: New Guest" and a 15-second countdown. Waiter 2 (Zone B)
+  is not alerted. If nobody claims it within 8 seconds, the runners are
+  alerted too, including Waiter 3's watch.
+- When Waiter 1 taps "Attending", the alert clears for everyone straight away.
+  Waiter 1 shows "Serving Table 4 (00:05)", becomes Busy Serving in the roster,
+  Available Staff drops by one, and Avg Response Time updates.
+- "Simulate Rush Hour" makes 4–5 random tables across different zones need
+  greeting at once, and each alert goes to its own zone's staff.
 
 ## Required conditions
-- Waiter A taps "Attending" before the 15-second countdown reaches zero.
-- Both waiter screens show the same alert and the same countdown at the
-  same moment.
-- Clicking "Guest Sat" changes Table 4 from "Available" to "Needs Greeting".
-- Before that click, Table 4 is "Available", and Waiters A and B are both
-  "On Shift" and "Idle / Ready". This comes from local sample data.
+- One waiter taps "Attending" before the table's countdown runs out.
+- Each alert reaches the available staff of that table's zone at once, and
+  runners after 8 seconds, or straight away if the zone has no one free.
+- Clicking "Guest Sat" changes a table from "Available" to "Needs Greeting".
+- Before that, the table is "Available" and 13 of the 15 staff are on shift.
+  This comes from local sample data.
 
 ## Smallest journey
-1. The tester opens the page. Tables 1–6 show "Available", and Waiters A and B
-   show "On Shift · Idle / Ready".
-2. The tester clicks "Guest Sat" on Table 4. Table 4 changes to
-   "Needs Greeting", and both waiter screens flash red with
-   "Table 4: New Guest" and a 15-second countdown.
-3. Within 15 seconds, the tester taps "Attending" on Waiter A's screen.
-4. Waiter A shows a green "Serving Table 4 (00:08)". Waiter B shows
-   "Table 4 taken by Waiter A". Table 4 on the map shows
-   "Served by Waiter A", and Average Response Time updates.
-5. The tester clicks "Guest Left" on Table 4. Both watches show a blue
-   "Table 4: Clean Table" alert. A waiter taps "Cleaned", Table 4 returns to
-   "Available", and Tables Turned goes up by one.
+1. The tester opens the page and sees 25 tables in 3 zones, the 15-staff roster,
+   and 3 idle watches.
+2. The tester clicks "Guest Sat" on Table 4. The Zone A staff light up and
+   Waiter 1's watch flashes red with a 15-second countdown. After 8 seconds,
+   Waiter 3 (Runner) is alerted too.
+3. The tester taps "Attending" on Waiter 1. The alert clears everywhere, Waiter 1
+   is Busy Serving, and the metrics update.
+4. The tester clicks "Guest Left" on Table 4, then "Cleaned" on a Zone A watch.
+   Table 4 is Available again and Tables Turned goes up by one.
+5. The tester clicks "Simulate Rush Hour" and sees 4–5 tables across zones
+   alerting at the same time, each on the right zone's watch.
 
 ## Later
-- What happens when the countdown hits 0 (escalate to a manager, louder alert).
-  For now, the watch shows "Overdue" and the waiter can still attend.
-- An On Shift / Off Shift toggle for each waiter. For now, both start on shift.
-- Choosing the nearest free waiter when several tables alert at once.
+- What happens when a countdown hits 0 (escalate to a manager). For now the
+  watch shows "Overdue!" and staff can still attend.
+- Letting staff go on or off break from the roster. For now 2 staff are on
+  break in the sample data.
+- Choosing the nearest free waiter instead of alerting the whole zone.
 - Real seat sensors and real smartbands, kept in sync across devices
   (for example Supabase Realtime).
 - More manager stats, such as how many tables missed 15 seconds.
 
-_Updated during /one-shot: the participant asked to add the Guest Left →
-Clean → Available cycle and the live metrics bar, which were under Later._
+_Updated on 13 November 2026: scaled from 6 tables and 2 waiters to 25 tables,
+15 staff and 3 zones, with a rush-hour simulation, at the participant's
+request._

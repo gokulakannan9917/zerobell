@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SeatSense · 15-second greeting demo",
+  title: "ZeroBell · 15-second greeting demo",
   description:
     "Seat sensors alert waiter smartbands so every guest is greeted within 15 seconds.",
 };
