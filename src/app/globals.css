@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Always dark: this demo is shown on a projector. */
+:root {
+  --background: #020617;
+  --foreground: #e2e8f0;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Red flashing watch face for a new-guest alert. */
+@keyframes alert-flash {
+  0%,
+  100% {
+    background-color: #b91c1c;
+  }
+  50% {
+    background-color: #ef4444;
+  }
+}
+
+.alert-flash {
+  background-color: #dc2626;
+  animation: alert-flash 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alert-flash {
+    animation: none;
+  }
+}
